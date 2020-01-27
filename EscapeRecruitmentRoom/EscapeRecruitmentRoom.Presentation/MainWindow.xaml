@@ -8,6 +8,8 @@
     Title="{Binding SelectedViewModel.Title}"
     Width="1000"
     Height="680"
+    MinWidth="910"
+    MinHeight="665"
     d:DataContext="{d:DesignInstance Type=viewModel:MainViewModel,
                                      IsDesignTimeCreatable=True}"
     mc:Ignorable="d">

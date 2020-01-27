@@ -47,6 +47,7 @@ namespace EscapeRecruitmentRoom.Presentation.ViewModel
         public RelayCommand Logout { get; }
         public RelayCommand Parse { get; }
         public RelayCommand Copy { get; }
+        public RelayCommand Solution { get; }
 
         public RoomViewModel(IGameManager manager, ILoginService loginService, IViewNavigator navigator)
         {
@@ -58,9 +59,14 @@ namespace EscapeRecruitmentRoom.Presentation.ViewModel
             Tiles = Manager.GameState.Tiles;
 
             Left = new RelayCommand(() => Go(Direction.Left));
+
             Right = new RelayCommand(() => Go(Direction.Right));
+
             Up = new RelayCommand(() => Go(Direction.Up));
+
             Down = new RelayCommand(() => Go(Direction.Down));
+
+            Restart = new RelayCommand(() => RestartImpl());
 
             Parse = new RelayCommand(() =>
             {
@@ -81,6 +87,109 @@ namespace EscapeRecruitmentRoom.Presentation.ViewModel
             Logout = new RelayCommand(() => _navigator.NavigateTo(View.Login));
 
             Copy = new RelayCommand(() => Clipboard.SetText(string.Join("#", Manager.GameState.Commands)));
+
+            Solution = new RelayCommand(() =>
+            {
+                Go(Direction.Down);
+                Go(Direction.Right);
+                Go(Direction.Down);
+                Go(Direction.Down);
+                Go(Direction.Down);
+                Go(Direction.Right);
+                Go(Direction.Right);
+                ExecuteAutomatedCommand("K8 Move Down");
+                ExecuteAutomatedCommand("I9 Move Right");
+                ExecuteAutomatedCommand("J9 Move Right");
+                ExecuteAutomatedCommand("K9 Move Right");
+                Go(Direction.Down);
+                Go(Direction.Right);
+                Go(Direction.Right);
+                Go(Direction.Right);
+                for (int i=0; i<8; i++)
+                {
+                    Go(Direction.Left);
+                }
+                ExecuteAutomatedCommand("D9 Move Up");
+                Go(Direction.Left);
+                Go(Direction.Left);
+                Go(Direction.Left);
+                for (int i=0; i<5; i++)
+                {
+                    Go(Direction.Up);
+                }
+                Go(Direction.Left);
+                Go(Direction.Right);
+                Go(Direction.Down);
+                Go(Direction.Down);
+                Go(Direction.Right);
+                ExecuteAutomatedCommand("D6 Move Down");
+                Go(Direction.Right);
+                ExecuteAutomatedCommand("E6 Move Down");
+                Go(Direction.Right);
+                ExecuteAutomatedCommand("F6 Move Up");
+                ExecuteAutomatedCommand("F5 Move Left");
+                for (int i=0; i<4; i++)
+                {
+                    Go(Direction.Up);
+                }
+                ExecuteAutomatedCommand("E1 Move Left");
+                ExecuteAutomatedCommand("D1 Move Left");
+                Go(Direction.Right);
+                ExecuteAutomatedCommand("G2 Move Down");
+                ExecuteAutomatedCommand("G3 Move Left");
+                ExecuteAutomatedCommand("F3 Move Left");
+                ExecuteAutomatedCommand("E3 Move Up");
+                ExecuteAutomatedCommand("E2 Move Up");
+                Go(Direction.Left);
+                ExecuteAutomatedCommand("E1 Move Left");
+                ExecuteAutomatedCommand("D1 Move Left");
+                Go(Direction.Up);
+                Go(Direction.Left);
+                ExecuteAutomatedCommand("C1 Move Left");
+                Go(Direction.Left);
+                Go(Direction.Left);
+                Go(Direction.Left);
+                for (int i=0; i<4; i++)
+                {
+                    Go(Direction.Right);
+                }
+                for (int i=0; i<4; i++)
+                {
+                    Go(Direction.Down);
+                }
+                for (int i=0; i<5; i++)
+                {
+                    Go(Direction.Right);
+                }
+                ExecuteAutomatedCommand("J6 Move Right");
+                ExecuteAutomatedCommand("K6 Move Up");
+                ExecuteAutomatedCommand("K5 Move Right");
+                Go(Direction.Up);
+                Go(Direction.Right);
+                ExecuteAutomatedCommand("L3 PutTNT");
+                ExecuteAutomatedCommand("L3 FireUP");
+                ExecuteAutomatedCommand("L5 Move Right");
+                Go(Direction.Right);
+                ExecuteAutomatedCommand("M3 Move Left");
+                ExecuteAutomatedCommand("M5 Move Up");
+                ExecuteAutomatedCommand("M4 Move Up");
+                ExecuteAutomatedCommand("M3 FireUp");
+                Go(Direction.Down);
+                Go(Direction.Right);
+                for (int i=0; i<4; i++)
+                {
+                    Go(Direction.Up);
+                }
+            });
+        }
+
+        void ExecuteAutomatedCommand(string inputCommand)
+        {
+            CommandParser.ParseAndRun(inputCommand, Manager);
+            Tiles = Manager.GameState.Tiles;
+            this.RaisePropertyChanged(nameof(Tiles));
+            this.RaisePropertyChanged(nameof(Title));
+
         }
 
         private void Go(Direction direction)
@@ -101,11 +210,12 @@ namespace EscapeRecruitmentRoom.Presentation.ViewModel
             Manager.Restart();
             Tiles = Manager.GameState.Tiles;
             this.RaisePropertyChanged(nameof(Tiles));
+           
         }
 
         public void Update()
         {
-            Message += $"{_loginService.UserName}!";
+            Message = "Welcome " + $"{_loginService.UserName}!";
         }
     }
 }

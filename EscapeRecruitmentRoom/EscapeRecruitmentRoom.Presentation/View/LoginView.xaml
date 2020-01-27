@@ -25,12 +25,14 @@
             <TextBox
                 Height="25"
                 Margin="5,10"
-                Text="{Binding LoginText, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding LoginText, UpdateSourceTrigger=PropertyChanged}" 
+                MaxLength="50"/>
             <TextBlock Margin="5,10" Text="Password" />
             <TextBox
                 Height="25"
                 Margin="5,10"
-                Text="{Binding PasswordText, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding PasswordText, UpdateSourceTrigger=PropertyChanged}"
+                MaxLength="50"/>
         </UniformGrid>
         <Button
             Grid.Row="2"

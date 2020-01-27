@@ -45,7 +45,19 @@ namespace EscapeRecruitmentRoom.Presentation.ViewModel
 
         private void LoginImpl()
         {
-            if (_loginService.Authorize(LoginText, PasswordText))
+            if(string.IsNullOrEmpty(LoginText) && string.IsNullOrEmpty(PasswordText))
+            {
+                Response = "Please provide credentials";
+            }
+            else if(string.IsNullOrEmpty(LoginText))
+            {
+                Response = "Login was not provided";
+            }
+            else if (string.IsNullOrEmpty(PasswordText))
+            {
+                Response = "Password was not provided";
+            }
+            else if (_loginService.Authorize(LoginText, PasswordText))
             {
                 PasswordText = Response = null;
                 _navigator.NavigateTo(View.Room);
